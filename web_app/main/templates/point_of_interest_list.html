@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Points of Interest in {{ city.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Points of Interest in {{ city.name }}</h1>
+        <div class="poi-list">
+            {% for point in page_obj %}
+                <div class="poi-item">
+                    <a href="{% url 'point_of_interest_detail' point.id %}">
+                        <img src="{{ point.image_url }}" alt="{{ point.title }}">
+                        <p>{{ point.title }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+        <a href="{% url 'city_list' %}">Back to Cities</a>
+    </div>
+</body>
+</html>

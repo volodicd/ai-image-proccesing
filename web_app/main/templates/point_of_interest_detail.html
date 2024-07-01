@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ point.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
+    <style>
+        .detail-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .detail-container img {
+            max-width: 300px;
+            border-radius: 5px;
+        }
+        .detail-content {
+            flex: 1;
+        }
+        .search-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .search-buttons a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .search-buttons a:hover {
+            background-color: #2980b9;
+        }
+        .similar-points {
+            margin-top: 40px;
+        }
+        .similar-points h2 {
+            text-align: center;
+            color: #333;
+        }
+        .similar-points .poi-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+        .similar-points .poi-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .similar-points .poi-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .similar-points .poi-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ point.title }}</h1>
+        <div class="detail-container">
+            <img src="{{ point.image_url }}" alt="{{ point.title }}">
+            <div class="detail-content">
+                <p>{{ point.description }}</p>
+            </div>
+        </div>
+        <div class="search-buttons">
+            <a href="?search_method=default">Default Search</a>
+            <a href="?search_method=image">Search by Image</a>
+            <a href="?search_method=other_cities">Search in Other Cities</a>
+        </div>
+        <div class="similar-points">
+            <h2>Similar Points of Interest</h2>
+            <div class="poi-list">
+                {% for poi in similar_pois %}
+                    <div class="poi-item">
+                        <img src="{{ poi.image_url }}" alt="{{ poi.title }}">
+                        <p>{{ poi.title }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{% url 'point_of_interest_list' point.city.id %}">Back to Points of Interest</a>
+    </div>
+</body>
+</html>
